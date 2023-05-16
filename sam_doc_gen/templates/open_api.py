@@ -81,6 +81,10 @@ class OpenApiTemplate(HTMLTemplate):
             max-width: 1400px;
         }
 
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations.grupal {
+            padding-bottom: 12px;
+        }
+
         .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations.grupal > li div.heading {
             background-color: burlywood;
         }

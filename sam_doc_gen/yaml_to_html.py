@@ -97,7 +97,6 @@ def traslate_yaml(yaml, html_template):
     response.append(" ".join(body_st))
 
     response.append("</html>")
-
     return response
 
 def buildListItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
@@ -110,10 +109,10 @@ def buildListItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
         :param titleLabel: Etiqueta de la agrupación
         :param descObj: Gestor de descripciones
     """
-    item_list = []
-    key_list = []
-    label_list = []
     if isinstance(nodeObj, list) and len(nodeObj) > 0:
+        item_list = []
+        key_list = []
+        label_list = []
         label_template = Template(html_template.getLabelPropertiesCategory())
         value_template = Template(html_template.getValuePropertiesCategory())
 
@@ -132,13 +131,15 @@ def buildListItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
             if descObj:
                 item_list.append(value_template.substitute(value=''))
             item_list.append("</tr>")
-
-    containar_template = Template(html_template.getPropertiesCategory())
-    item_list_template = Template(html_template.getPropertiesItemCategory())
-    return containar_template.substitute(title=titleLabel, 
+        
+        containar_template = Template(html_template.getPropertiesCategory())
+        item_list_template = Template(html_template.getPropertiesItemCategory())
+        return containar_template.substitute(title=titleLabel, 
                                                  item_list=item_list_template.substitute(color=opColor,
                                                                                          labels=''.join(label_list),
                                                                                          row_list=''.join(item_list)))
+    else:
+        return ''
 
 def buildDictItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
     """
@@ -150,25 +151,28 @@ def buildDictItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
         :param titleLabel: Etiqueta de la agrupación
         :param descObj: Gestor de descripciones
     """
-    item_list = []
-    label_list = []
-    label_template = Template(html_template.getLabelPropertiesCategory())
-    label_list.append(label_template.substitute(label='name'))
-    label_list.append(label_template.substitute(label='value'))
-    label_list.append(label_template.substitute(label='description'))
+    if isinstance(nodeObj, dict) and len(nodeObj) > 0:
+        item_list = []
+        label_list = []
+        label_template = Template(html_template.getLabelPropertiesCategory())
+        label_list.append(label_template.substitute(label='name'))
+        label_list.append(label_template.substitute(label='value'))
+        label_list.append(label_template.substitute(label='description'))
 
-    item_template = Template(html_template.getItemList())
-    for item in nodeObj:
-        item_list.append(item_template.substitute(key=item, 
-                                                  value=nodeObj.get(item), 
-                                                  title='' if descObj is None else ''))
+        item_template = Template(html_template.getItemList())
+        for item in nodeObj:
+            item_list.append(item_template.substitute(key=item, 
+                                                    value=nodeObj.get(item), 
+                                                    title='' if descObj is None else ''))
 
-    containar_template = Template(html_template.getPropertiesCategory())
-    item_list_template = Template(html_template.getPropertiesItemCategory())
-    return containar_template.substitute(title=titleLabel, 
-                                                 item_list=item_list_template.substitute(color=opColor,
-                                                                                         labels=''.join(label_list),
-                                                                                         row_list=''.join(item_list)))
+        containar_template = Template(html_template.getPropertiesCategory())
+        item_list_template = Template(html_template.getPropertiesItemCategory())
+        return containar_template.substitute(title=titleLabel, 
+                                                    item_list=item_list_template.substitute(color=opColor,
+                                                                                            labels=''.join(label_list),
+                                                                                            row_list=''.join(item_list)))
+    else:
+        return ''
 
 def buildDictDictItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
     """
