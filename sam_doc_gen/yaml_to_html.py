@@ -99,6 +99,35 @@ def traslate_yaml(yaml, html_template):
     response.append("</html>")
     return response
 
+def generate_open_api_report(origin, inTarget, target, outTarget, template):
+    """
+        Genera un informe HTML a partir de un activo con formato YAML
+
+        :param origin: Jerarquía de objetos YAML
+        :param inTarget: HTML template class
+        :param target: Jerarquía de objetos YAML
+        :param outTarget: HTML template class
+        :param template: Tamplate HTML utilizado para generar el informe
+    """
+    inputActive = prepare_input_active(origin, inTarget)
+    if inputActive[1] is None:
+        sys.exit("Input file [" + inputActive[0] + "] does not exists")
+
+    outputActive = prepare_output_active(target, outTarget, (inputActive[1], inputActive[2]))
+    if not outputActive[1]:
+        sys.exit("Output source [" + str(outputActive[0]) + "] failed to be generated")
+
+    with open(inputActive[0]) as file:
+        yaml_file_object = yaml.load(file, Loader=yaml.FullLoader)
+
+        html_st = traslate_yaml(yaml_file_object, template)
+
+        if target == 'folder':
+            f = open(outputActive[0], "w")
+            f.write(" ".join(html_st))
+            f.close()
+            print("File " + str(outputActive[0]) + " has been generated")
+
 def buildListItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
     """
         Iterate over List object to build container list template's
@@ -197,35 +226,6 @@ def buildDictDictItems(html_template, nodeObj, opColor, titleLabel, descObj = No
         dict_st.append(html_template.getPropertiesPartDownCategory())
     
     return ''.join(dict_st)
-
-def generate_open_api_report(origin, inTarget, target, outTarget, template):
-    """
-        Genera un informe HTML a partir de un activo con formato YAML
-
-        :param origin: Jerarquía de objetos YAML
-        :param inTarget: HTML template class
-        :param target: Jerarquía de objetos YAML
-        :param outTarget: HTML template class
-        :param template: Tamplate HTML utilizado para generar el informe
-    """
-    inputActive = prepare_input_active(origin, inTarget)
-    if inputActive[1] is None:
-        sys.exit("Input file [" + inputActive[0] + "] does not exists")
-
-    outputActive = prepare_output_active(target, outTarget, (inputActive[1], inputActive[2]))
-    if not outputActive[1]:
-        sys.exit("Output source [" + str(outputActive[0]) + "] failed to be generated")
-
-    with open(inputActive[0]) as file:
-        yaml_file_object = yaml.load(file, Loader=yaml.FullLoader)
-
-        html_st = traslate_yaml(yaml_file_object, template)
-
-        if target == 'folder':
-            f = open(outputActive[0], "w")
-            f.write(" ".join(html_st))
-            f.close()
-            print("File " + str(outputActive[0]) + " has been generated")
 
 """
 Este módulo posibilita la conversión de un archivo en formato YAML a un archivo HTML.
