@@ -4,10 +4,8 @@ import argparse
 
 from pathlib import Path
 from string import Template
-from prettytable import PrettyTable
-from loremipsum import get_sentences
-
 import oyaml as yaml
+
 
 def prepare_input_active(type, source):
     """
@@ -17,7 +15,7 @@ def prepare_input_active(type, source):
     """
     if source is None:
         return (None, None)
-    
+
     SPECIFICATIONS = 'specifications'
 
     if type == 'connector':
@@ -28,8 +26,9 @@ def prepare_input_active(type, source):
         return (source, None)
     stf = os.path.split(os.path.abspath(source))
     swe = stf[0].split(SPECIFICATIONS)
-    
+
     return (source, '' if len(swe) == 1 else swe[1], stf[1])
+
 
 def prepare_output_active(type, target, extra):
     """
@@ -48,14 +47,15 @@ def prepare_output_active(type, target, extra):
         f = Path(target)
         if not f.is_dir():
             return (target, False)
-        
-        os.makedirs(target + extra[0], exist_ok = True)
+
+        os.makedirs(target + extra[0], exist_ok=True)
         f = Path(target + extra[0], extra[1])
-        
+
         return (f.with_suffix('.html'), True)
-    
+
     else:
         return (None, False)
+
 
 def traslate_yaml(yaml, html_template):
     """
@@ -77,9 +77,12 @@ def traslate_yaml(yaml, html_template):
     info_template = Template(html_template.getInfoCategory())
 
     item_list = []
-    item_list.append(item_template.substitute(key='Publicación en blockchain:', value='Habilitado' if yaml.get("publishBlockchain") else 'Deshabilitado', title=''))
-    item_list.append(item_template.substitute(key='Publicación justificantes:', value='Habilitado' if yaml.get("publishCertificates") else 'Deshabilitado', title=''))
-    item_list.append(item_template.substitute(key='Publicación justificantes privados:', value='Habilitado' if yaml.get("publishPrivateCertificate") else 'Deshabilitado', title=''))
+    item_list.append(item_template.substitute(key='Publicación en blockchain:',
+                                              value='Habilitado' if yaml.get("publishBlockchain") else 'Deshabilitado', title=''))
+    item_list.append(item_template.substitute(key='Publicación justificantes:',
+                                              value='Habilitado' if yaml.get("publishCertificates") else 'Deshabilitado', title=''))
+    item_list.append(item_template.substitute(key='Publicación justificantes privados:',
+                                              value='Habilitado' if yaml.get("publishPrivateCertificate") else 'Deshabilitado', title=''))
 
     body_st.append(info_template.substitute(name=yaml.get('name'), description=yaml.get('description'), row_list=''.join(item_list)))
 
@@ -92,7 +95,6 @@ def traslate_yaml(yaml, html_template):
 
     body_st.append(buildListItems(html_template, yaml.get('alarmsDefinition'), 'good', 'Alarmas', True))
 
-
     body_st.append("</ul></div>")
 
     body_st.append("</body>")
@@ -100,6 +102,7 @@ def traslate_yaml(yaml, html_template):
 
     response.append("</html>")
     return response
+
 
 def generate_report(origin, inTarget, target, outTarget, template):
     """
@@ -130,6 +133,7 @@ def generate_report(origin, inTarget, target, outTarget, template):
             f.close()
             print("File " + str(outFile) + " has been generated")
 
+
 def generate_active_report():
     if __name__ == "__main__":
         import templates.open_api as open_api
@@ -137,14 +141,18 @@ def generate_active_report():
         import sam_doc_gen.templates.open_api as open_api
 
     parser = argparse.ArgumentParser(description='YAML file to (HTML) table converter',
-                    epilog='text table will be printed as STDOUT - html table will be save in html file ')
-    parser.add_argument('--in', dest='origin', choices=['connector', 'file'], required=True, help="Discriminates the input between 'connector' or 'file' source")
-    parser.add_argument('--source', dest='inputTarget', required=True, help="input connector or yaml file to process")
-    parser.add_argument('--out', dest='target', choices=['folder', 'stream'], required=True, help="Discriminates the output target generated between 'folder' or 'stream' destination")
+                                     epilog='text table will be printed as STDOUT - html table will be save in html file ')
+    parser.add_argument('--in', dest='origin', choices=['connector', 'file'],
+                        required=True, help="Discriminates the input between 'connector' or 'file' source")
+    parser.add_argument('--source', dest='inputTarget',
+                        required=True, help="input connector or yaml file to process")
+    parser.add_argument('--out', dest='target', choices=['folder', 'stream'],
+                        required=True, help="Discriminates the output target generated between 'folder' or 'stream' destination")
     parser.add_argument('--target', dest='outputTarget', help="output target to write html output")
 
     args = parser.parse_args()
     generate_report(args.origin, args.inputTarget, args.target, args.outputTarget, open_api.OpenApiTemplate());
+
 
 def generate_active():
     if __name__ == "__main__":
@@ -153,14 +161,15 @@ def generate_active():
         import sam_doc_gen.templates.open_api as open_api
 
     parser = argparse.ArgumentParser(description='YAML file to (HTML) table converter',
-                    epilog='text table will be printed as STDOUT - html table will be save in html file ')
+                                     epilog='text table will be printed as STDOUT - html table will be save in html file ')
     parser.add_argument('--source', dest='inputActive', required=True, help="input connector or yaml file to process")
     parser.add_argument('--target', dest='outputFolder', help="output target to write html output")
 
     args = parser.parse_args()
-    generate_report('connector', args.inputActive, 'folder', args.outputFolder, open_api.OpenApiTemplate());
+    generate_report('connector', args.inputActive, 'folder', args.outputFolder, open_api.OpenApiTemplate())
 
-def buildListItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
+
+def buildListItems(html_template, nodeObj, opColor, titleLabel, descObj=None):
     """
         Iterate over List object to build container list template's
 
@@ -192,15 +201,16 @@ def buildListItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
             if descObj:
                 item_list.append(value_template.substitute(value=''))
             item_list.append("</tr>")
-        
+
         containar_template = Template(html_template.getPropertiesCategory())
         item_list_template = Template(html_template.getPropertiesItemCategory())
-        return containar_template.substitute(title=titleLabel, 
-                                                 item_list=item_list_template.substitute(color=opColor,
-                                                                                         labels=''.join(label_list),
-                                                                                         row_list=''.join(item_list)))
+        return containar_template.substitute(title=titleLabel,
+                                             item_list=item_list_template.substitute(color=opColor,
+                                                                                     labels=''.join(label_list),
+                                                                                     row_list=''.join(item_list)))
     else:
         return ''
+
 
 def buildDictItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
     """
@@ -222,20 +232,21 @@ def buildDictItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
 
         item_template = Template(html_template.getItemList())
         for item in nodeObj:
-            item_list.append(item_template.substitute(key=item, 
-                                                    value=nodeObj.get(item), 
-                                                    title='' if descObj is None else ''))
+            item_list.append(item_template.substitute(key=item,
+                                                      value=nodeObj.get(item),
+                                                      title='' if descObj is None else ''))
 
         containar_template = Template(html_template.getPropertiesCategory())
         item_list_template = Template(html_template.getPropertiesItemCategory())
-        return containar_template.substitute(title=titleLabel, 
-                                                    item_list=item_list_template.substitute(color=opColor,
-                                                                                            labels=''.join(label_list),
-                                                                                            row_list=''.join(item_list)))
+        return containar_template.substitute(title=titleLabel,
+                                             item_list=item_list_template.substitute(color=opColor,
+                                                                                     labels=''.join(label_list),
+                                                                                     row_list=''.join(item_list)))
     else:
         return ''
 
-def buildDictDictItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
+
+def buildDictDictItems(html_template, nodeObj, opColor, titleLabel, descObj=None):
     """
         Itera sobre un diccionario que contiene subesquema de listado diccionarios
 
@@ -256,13 +267,15 @@ def buildDictDictItems(html_template, nodeObj, opColor, titleLabel, descObj = No
             dict_st.append(buildDictItems(html_template, nodeObj.get(key), opColor, key, descObj))
 
         dict_st.append(html_template.getPropertiesPartDownCategory())
-    
+
     return ''.join(dict_st)
+
 
 """
 Este módulo posibilita la conversión de un archivo en formato YAML a un archivo HTML.
 
-El documento HTML generado presenta el estilo OpenAPI, por defecto, describiendo a cada agrupación YAML como una agrupación (secciones) endpoint de OpenAPI.
+El documento HTML generado presenta el estilo OpenAPI, por defecto,
+describiendo a cada agrupación YAML como una agrupación (secciones) endpoint de OpenAPI.
 
 El enfoque conectores asume la existenca del directorio `specifications`, donde se distribuirán cada una de las especificaciones.
 

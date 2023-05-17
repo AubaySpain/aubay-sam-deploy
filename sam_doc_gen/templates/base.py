@@ -3,7 +3,7 @@ class HTMLTemplate:
 
     def __init__(self):
         self.data = []
-    
+
     def getHead(self):
         return """
   <head>
@@ -21,16 +21,16 @@ class HTMLTemplate:
 
     def getInfoCategory(self):
         return self.__INFO_CATEGORY
-    
+
     def getLabelPropertiesCategory(self):
         return self.__LABEL_PROPERTIES_CATEGORY
 
     def getValuePropertiesCategory(self):
         return self.__VALUE_PROPERTIES_CATEGORY
-    
+
     def getPropertiesItemCategory(self):
         return self.__PROPERTIES_ITEM_CATEGORY
-    
+
     def getPropertiesCategory(self):
         return self.__PROPERTIES_CATEGORY
 
@@ -92,11 +92,11 @@ class HTMLTemplate:
     __LABEL_PROPERTIES_CATEGORY = """
                             <th>${label}</th>
                             """
-    
+
     __VALUE_PROPERTIES_CATEGORY = """
 <td class="code"><label>${value}</label></td>
                             """
-    
+
     __PROPERTIES_ITEM_CATEGORY = """
                 <li class="${color}">
                   <div>
@@ -115,7 +115,7 @@ class HTMLTemplate:
                   </div>
                 </li>
                     """
-    
+
     __PROPERTIES_PART_UP_CATEGORY = """
       <li class="resource">
         <div class="heading">
@@ -124,7 +124,7 @@ class HTMLTemplate:
             <li class="endpoint">
               <ul class="operations">
                     """
-    
+
     __PROPERTIES_PART_DOWN_CATEGORY = """
               </ul>
             </li>
@@ -133,7 +133,7 @@ class HTMLTemplate:
         </div>
       </li>
                     """
-    
+
     __PROPERTIES_CATEGORY = __PROPERTIES_PART_UP_CATEGORY + """
                 ${item_list}
                                                     """ + __PROPERTIES_PART_DOWN_CATEGORY

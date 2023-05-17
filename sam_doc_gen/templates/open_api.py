@@ -1,5 +1,6 @@
 from .base import HTMLTemplate
 
+
 class OpenApiTemplate(HTMLTemplate):
     """HTML Template class with OpenAPI format"""
 
@@ -14,22 +15,22 @@ class OpenApiTemplate(HTMLTemplate):
 
     def getInfoCategory(self):
         return self.__INFO_CATEGORY
-    
+
     def getLabelPropertiesCategory(self):
         return self.__LABEL_PROPERTIES_CATEGORY
 
     def getValuePropertiesCategory(self):
         return self.__VALUE_PROPERTIES_CATEGORY
-    
+
     def getPropertiesItemCategory(self):
         return self.__PROPERTIES_ITEM_CATEGORY
-    
+
     def getPropertiesCategory(self):
         return self.__PROPERTIES_CATEGORY
-    
+
     def getPropertiesPartUpCategory(self):
         return self.__PROPERTIES_PART_UP_CATEGORY
-    
+
     def getPropertiesPartDownCategory(self):
         return self.__PROPERTIES_PART_DOWN_CATEGORY
 
@@ -60,7 +61,8 @@ class OpenApiTemplate(HTMLTemplate):
         border: 1px solid #f2f77f;
         }
 
-        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3 span.http_method a {
+        .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3
+         span.http_method a {
         text-transform: uppercase;
         color: white;
         display: inline-block;
@@ -75,7 +77,7 @@ class OpenApiTemplate(HTMLTemplate):
         -khtml-border-radius: 2px;
         border-radius: 2px;
         }
-        
+
         .swagger-section .swagger-ui-wrap {
             min-width: 760px;
             max-width: 1400px;
@@ -169,11 +171,11 @@ class OpenApiTemplate(HTMLTemplate):
     __LABEL_PROPERTIES_CATEGORY = """
                             <th style="width: 100px; max-width: 100px" data-sw-translate="">${label}</th>
                             """
-    
+
     __VALUE_PROPERTIES_CATEGORY = """
 <td class="code"><label>${value}</label></td>
                             """
-    
+
     __PROPERTIES_ITEM_CATEGORY = """
                 <li class="${color} operation">
                   <div class="content">
@@ -192,7 +194,7 @@ class OpenApiTemplate(HTMLTemplate):
                   </div>
                 </li>
                     """
-    
+
     __PROPERTIES_PART_UP_CATEGORY = """
       <li class="resource">
         <div class="heading">
@@ -201,7 +203,7 @@ class OpenApiTemplate(HTMLTemplate):
             <li class="endpoint">
               <ul class="operations">
                     """
-    
+
     __PROPERTIES_PART_DOWN_CATEGORY = """
               </ul>
             </li>
@@ -210,7 +212,7 @@ class OpenApiTemplate(HTMLTemplate):
         </div>
       </li>
                     """
-    
+
     __PROPERTIES_CATEGORY = __PROPERTIES_PART_UP_CATEGORY + """
                 ${item_list}
                                                     """ + __PROPERTIES_PART_DOWN_CATEGORY
