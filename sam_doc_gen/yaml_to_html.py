@@ -1,11 +1,13 @@
 import os
 import sys
+import argparse
+
 from pathlib import Path
-import oyaml as yaml
 from string import Template
 from prettytable import PrettyTable
 from loremipsum import get_sentences
-import argparse
+
+import oyaml as yaml
 
 def prepare_input_active(type, source):
     """
@@ -99,7 +101,7 @@ def traslate_yaml(yaml, html_template):
     response.append("</html>")
     return response
 
-def generate_open_api_report(origin, inTarget, target, outTarget, template):
+def generate_report(origin, inTarget, target, outTarget, template):
     """
         Genera un informe HTML a partir de un activo con formato YAML
 
@@ -107,26 +109,56 @@ def generate_open_api_report(origin, inTarget, target, outTarget, template):
         :param inTarget: HTML template class
         :param target: Jerarquía de objetos YAML
         :param outTarget: HTML template class
-        :param template: Tamplate HTML utilizado para generar el informe
+        :param template: Template HTML utilizado para generar el informe
     """
-    inputActive = prepare_input_active(origin, inTarget)
-    if inputActive[1] is None:
-        sys.exit("Input file [" + inputActive[0] + "] does not exists")
+    inFile, inSubPath, inActive = prepare_input_active(origin, inTarget)
+    if inSubPath is None:
+        sys.exit("Input file [" + inFile + "] does not exists")
 
-    outputActive = prepare_output_active(target, outTarget, (inputActive[1], inputActive[2]))
-    if not outputActive[1]:
-        sys.exit("Output source [" + str(outputActive[0]) + "] failed to be generated")
+    outFile, result = prepare_output_active(target, outTarget, (inSubPath, inActive))
+    if not result:
+        sys.exit("Output source [" + str(outFile) + "] failed to be generated")
 
-    with open(inputActive[0]) as file:
+    with open(inFile) as file:
         yaml_file_object = yaml.load(file, Loader=yaml.FullLoader)
 
         html_st = traslate_yaml(yaml_file_object, template)
 
         if target == 'folder':
-            f = open(outputActive[0], "w")
+            f = open(outFile, "w")
             f.write(" ".join(html_st))
             f.close()
-            print("File " + str(outputActive[0]) + " has been generated")
+            print("File " + str(outFile) + " has been generated")
+
+def generate_active_report():
+    if __name__ == "__main__":
+        import templates.open_api as open_api
+    else:
+        import sam_doc_gen.templates.open_api as open_api
+
+    parser = argparse.ArgumentParser(description='YAML file to (HTML) table converter',
+                    epilog='text table will be printed as STDOUT - html table will be save in html file ')
+    parser.add_argument('--in', dest='origin', choices=['connector', 'file'], required=True, help="Discriminates the input between 'connector' or 'file' source")
+    parser.add_argument('--source', dest='inputTarget', required=True, help="input connector or yaml file to process")
+    parser.add_argument('--out', dest='target', choices=['folder', 'stream'], required=True, help="Discriminates the output target generated between 'folder' or 'stream' destination")
+    parser.add_argument('--target', dest='outputTarget', help="output target to write html output")
+
+    args = parser.parse_args()
+    generate_report(args.origin, args.inputTarget, args.target, args.outputTarget, open_api.OpenApiTemplate());
+
+def generate_active():
+    if __name__ == "__main__":
+        import templates.open_api as open_api
+    else:
+        import sam_doc_gen.templates.open_api as open_api
+
+    parser = argparse.ArgumentParser(description='YAML file to (HTML) table converter',
+                    epilog='text table will be printed as STDOUT - html table will be save in html file ')
+    parser.add_argument('--source', dest='inputActive', required=True, help="input connector or yaml file to process")
+    parser.add_argument('--target', dest='outputFolder', help="output target to write html output")
+
+    args = parser.parse_args()
+    generate_report('connector', args.inputActive, 'folder', args.outputFolder, open_api.OpenApiTemplate());
 
 def buildListItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
     """
@@ -257,15 +289,4 @@ configLocale:
 
 """
 if __name__ == "__main__":
-
-    import templates.open_api as open_api
-
-    parser = argparse.ArgumentParser(description='YAML file to (HTML) table converter',
-                    epilog='text table will be printed as STDOUT - html table will be save in html file ')
-    parser.add_argument('--in', dest='origin', choices=['connector', 'file'], required=True, help="Discriminates the input between 'connector' or 'file' source")
-    parser.add_argument('--source', dest='inputTarget', required=True, help="input connector or yaml file to process")
-    parser.add_argument('--out', dest='target', choices=['folder', 'stream'], required=True, help="Discriminates the output target generated between 'folder' or 'stream' destination")
-    parser.add_argument('--target', dest='outputTarget', help="output target to write html output")
-
-    args = parser.parse_args()
-    generate_open_api_report(args.origin, args.inputTarget, args.target, args.outputTarget, open_api.OpenApiTemplate());
+    generate_active_report()

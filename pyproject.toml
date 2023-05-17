@@ -3,21 +3,21 @@
 # package, this name will be registered for you. It will determine how
 # users can install this project, e.g.:
 #
-# $ pip install aubaySamDeploy
+# $ pip install aubay-sam-deploy
 #
-# And where it will live on PyPI: https://pypi.org/project/aubaySamDeploy/
+# And where it will live on PyPI: https://pypi.org/project/aubay-sam-deploy/
 #
 # There are some restrictions on what makes a valid project name
 # specification here:
 # https://packaging.python.org/specifications/core-metadata/#name
-name = "aubaySamDeploy"  # Required
+name = "aubay-sam-deploy"  # Required
 
 # Versions should comply with PEP 440:
 # https://www.python.org/dev/peps/pep-0440/
 #
 # For a discussion on single-sourcing the version, see
 # https://packaging.python.org/guides/single-sourcing-package-version/
-version = "0.0.5"  # Required
+version = "0.0.7"  # Required
 
 # This is a one-line description or tagline of what your project does. This
 # corresponds to the "Summary" metadata field:
@@ -51,7 +51,7 @@ license = {file = "LICENSE"}
 # Note that this is a list of additional keywords, separated
 # by commas, to be used to assist searching for the distribution in a
 # larger catalog.
-keywords = ["sam_doc_gen", "setuptools", "development"]  # Optional
+keywords = ["sam_doc_gen", "sam_doc_gen.templates", "setuptools", "development"]  # Optional
 
 # This should be your name or the name of the organization who originally
 # authored the project, and a valid email address corresponding to the name
@@ -102,15 +102,15 @@ classifiers = [  # Optional
 #
 # For an analysis of this field vs pip's requirements files see:
 # https://packaging.python.org/discussions/install-requires-vs-requirements/
-dependencies = [ # Optional
-  "peppercorn"
-]
+# dependencies = [ # Optional
+#   "oyaml", "loremipsum", "PyYAML", "PrettyTable"
+# ]
 
 # List additional groups of dependencies here (e.g. development
 # dependencies). Users will be able to install these using the "extras"
 # syntax, for example:
 #
-#   $ pip install aubaySamDeploy[dev]
+#   $ pip install aubay-sam-deploy[dev]
 #
 # Similar to `dependencies` above, these must be valid existing
 # projects.
@@ -138,7 +138,7 @@ test = ["coverage"]
 # This is configuration specific to the `setuptools` build backend.
 # If you are using a different build backend, you will need to change this.
 [tool.setuptools]
-packages = ["sam_doc_gen"]
+packages = ["sam_doc_gen", "sam_doc_gen.templates"]
 # If there are data files included in your packages that need to be
 # installed, specify them here.
 # package-data = {"sam_doc_gen" = ["*.dat"]}
@@ -148,3 +148,7 @@ packages = ["sam_doc_gen"]
 # https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
 requires = ["setuptools>=43.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project.scripts]
+generate-active = "sam_doc_gen.yaml_to_html:generate_active"
+generate-active-report = "sam_doc_gen.yaml_to_html:generate_active_report"
