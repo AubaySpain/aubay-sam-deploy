@@ -13,4 +13,37 @@ The connectors approach assumes the existence of the 'specifications' directory,
 
 Script Example:
 
-`generate-active --source isylight/calle`
+`python sam_doc_gen/yaml_to_html.py --in connector --source isylight/calle --out folder`
+
+Compile project:
+
+```bash
+python3 -m build
+```
+
+Test compilation:
+
+```bash
+python3 -m venv .env/fresh-install-test
+. .env/fresh-install-test/bin/activate
+pip install dist/aubay_sam_deploy-<<version>>-py3-none-any.whl
+
+# Can use `generate-active` command
+generate-active --source isylight/calle
+
+# Or `generate-active-report` command
+generate-active-report --in file --source sample.yaml --out folder
+
+# to uninstall and quit
+pip uninstall aubay-sam-deploy
+deactive
+```
+
+Test by TestPypi:
+
+```bash
+python3 -m twine upload --verbose --config-file .devcontainer/.pypirc --repository testpypi dist/*
+```
+
+
+

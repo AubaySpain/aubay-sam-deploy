@@ -12,11 +12,17 @@
 		"vscode": {
 			"settings": {},
 			"extensions": [
-				"streetsidesoftware.code-spell-checker"
+				"streetsidesoftware.code-spell-checker",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"github.vscode-github-actions"
 			]
 		}
 	},
-	
+	"runArgs": [
+		"--name", "aubay_sam_deploy_devcontainer"
+	],
+
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "bash .devcontainer/install.sh"
 

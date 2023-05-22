@@ -151,7 +151,7 @@ def generate_active_report():
     parser.add_argument('--target', dest='outputTarget', help="output target to write html output")
 
     args = parser.parse_args()
-    generate_report(args.origin, args.inputTarget, args.target, args.outputTarget, open_api.OpenApiTemplate());
+    generate_report(args.origin, args.inputTarget, args.target, args.outputTarget, open_api.OpenApiTemplate())
 
 
 def generate_active():
@@ -212,7 +212,7 @@ def buildListItems(html_template, nodeObj, opColor, titleLabel, descObj=None):
         return ''
 
 
-def buildDictItems(html_template, nodeObj, opColor, titleLabel, descObj = None):
+def buildDictItems(html_template, nodeObj, opColor, titleLabel, descObj=None):
     """
         Itera sobre un esquema de un listado de diccionario
 
