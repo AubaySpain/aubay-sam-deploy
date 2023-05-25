@@ -91,7 +91,9 @@ def traslate_yaml(yaml, html_template):
     body_st.append(buildListItems(html_template, yaml.get('parameters'), 'good', 'Parámetros'))
     body_st.append(buildListItems(html_template, yaml.get('templates'), 'good', 'Plantillas'))
 
-    body_st.append(buildDictDictItems(html_template, yaml.get('configLocale'), 'put', 'Internationalización'))
+    body_st.append(buildListItems(html_template, yaml.get('reportDefinition'), 'good', 'Informes'))
+
+    body_st.append(buildDictDictItems(html_template, yaml.get('configLocale'), 'put', 'Internacionalización'))
 
     body_st.append(buildListItems(html_template, yaml.get('alarmsDefinition'), 'good', 'Alarmas', True))
 
