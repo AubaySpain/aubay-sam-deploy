@@ -1,19 +1,8 @@
-# general things to ignore
-build/
-dist/
-*.egg-info/
-*.egg
-*.py[cod]
-__pycache__/
-*.so
-*~
+# python
+__pycache__
 
-# due to using tox and pytest
-.tox
-.cache
+# vscode
+.vscode
 
-# sam_doc_gen
-.devcontainer/.pypirc
-specifications/
-target/
-.env/
+# specifications
+specifications/*[.yaml, .yml, .html]

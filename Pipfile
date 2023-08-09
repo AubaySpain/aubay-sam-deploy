@@ -1,12 +1,15 @@
 [[source]]
-url = "https://pypi.org/simple"
+url = 'https://pypi.org/simple'
 verify_ssl = true
-name = "pypi"
+name = 'pypi'
 
 [packages]
-requests = "*"
+beautifulsoup4 = '==4.12.2'
+cssbeautifier = '==1.14.9'
+oyaml = '==1.0'
+requests = '==2.31.0'
 
 [dev-packages]
 
 [requires]
-python_version = "3.11"
+python_version = '3.11'
