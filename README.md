@@ -44,6 +44,3 @@ Test by TestPypi:
 ```bash
 python3 -m twine upload --verbose --config-file .devcontainer/.pypirc --repository testpypi dist/*
 ```
-
-
-
