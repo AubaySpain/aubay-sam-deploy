@@ -5,4 +5,7 @@ __pycache__
 .vscode
 
 # specifications
-specifications/*[.yaml, .yml, .html]
+specifications
+
+# help
+help
